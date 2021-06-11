@@ -1,0 +1,41 @@
+{
+    "packages": [
+        {
+            "name": "abeautifulsite/simple-php-captcha",
+            "version": "1.0.1",
+            "version_normalized": "1.0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/claviska/simple-php-captcha.git",
+                "reference": "673e5e98487699a4be6a1640dde63321ebe7e490"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/claviska/simple-php-captcha/zipball/673e5e98487699a4be6a1640dde63321ebe7e490",
+                "reference": "673e5e98487699a4be6a1640dde63321ebe7e490",
+                "shasum": ""
+            },
+            "time": "2017-06-27T14:09:32+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "simple-php-captcha.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A simple PHP CAPTCHA script",
+            "homepage": "http://www.abeautifulsite.net/",
+            "support": {
+                "issues": "https://github.com/claviska/simple-php-captcha/issues",
+                "source": "https://github.com/claviska/simple-php-captcha/tree/1.0.1"
+            },
+            "install-path": "../abeautifulsite/simple-php-captcha"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}

@@ -1,0 +1,8 @@
+<h1>Firewall error</h1>
+
+<img src="<?php echo $_SESSION['captcha']['image_src'] ?>" alt="">
+
+<form action="/../firewall/app/functions/captchaCheck.php" method="post">
+    <input type="text" name="captcha" required>
+    <button type="submit">SEND</button>
+</form>

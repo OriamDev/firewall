@@ -5,13 +5,15 @@ session_start();
 require __DIR__ . '/../../vendor/abeautifulsite/simple-php-captcha/simple-php-captcha.php';
 require __DIR__ . '/../helpers/helper.php';
 
-    if($_SESSION['captcha_attempts'] > 4)
+define('RULES', require __DIR__ . '/../config/rules.php');
+
+    if($_SESSION['captcha_attempts'] == RULES['captcha_attempts'])
     {
-        updateBlackList();
         unset($_SESSION['captcha']);
         unset($_SESSION['url']);
-        die('MAX_CAPTCHA_ATTEMPTS');
+        updateBlackList();
     }
+
 
 
     if(isset($_POST['captcha']) && !empty($_POST['captcha']) && strlen($_POST['captcha']) == 5)

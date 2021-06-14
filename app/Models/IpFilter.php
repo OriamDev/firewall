@@ -19,18 +19,44 @@ class IpFilter
     public function __construct($ip)
     {
         $this->ip = ip2long($ip);
+
+        if(DEBUG)
+        {
+            r($ip);
+            $ip2long = $this->ip;
+            r($ip2long);
+            r('IpFilter');
+        }
+
     }
 
     public function check(): bool
     {
-        if($this->checkIpInRange())
+        $checkIpInRangeResult = $this->checkIpInRange();
+
+        if(DEBUG)
+            r($checkIpInRangeResult);
+
+        if($checkIpInRangeResult)
             return true;
 
-        if($this->checkIpInWhiteList())
+        $checkIpInWhiteList = $this->checkIpInWhiteList();
+        if(DEBUG)
+            r($checkIpInWhiteList);
+
+        if($checkIpInWhiteList)
             return true;
 
-        if($this->checkIpInBlackList())
+        $checkIpInBlackList = $this->checkIpInBlackList();
+        if(DEBUG)
+            r($checkIpInBlackList);
+
+        if($checkIpInBlackList)
+        {
+            require __DIR__ . '/../views/banned.phtml';
             return false;
+        }
+
 
         return true;
     }
@@ -38,7 +64,15 @@ class IpFilter
 
     private function checkIpInRange(): bool
     {
-        foreach ($this->readFile($this->whiteListRangeDir, ';') as $range)
+        if(DEBUG)
+            r('checkIpInRange');
+
+        $fileContent = $this->readFile($this->whiteListRangeDir, ';');
+
+        if(DEBUG)
+            r(count($fileContent));
+
+        foreach ($fileContent as $range)
         {
             if(strlen($range) > 0)
             {
@@ -54,13 +88,29 @@ class IpFilter
 
     private function checkIpInWhiteList(): bool
     {
-        return in_array($this->ip, $this->readFile($this->whiteListDir));
+        if(DEBUG)
+            r('checkIpInWhiteList');
+
+        $fileContent = $this->readFile($this->whiteListDir);
+
+        if(DEBUG)
+            r(count($fileContent));
+
+        return in_array($this->ip, $fileContent);
     }
 
 
     private function checkIpInBlackList(): bool
     {
-        return in_array($this->ip, $this->readFile($this->blackListDir));
+        if(DEBUG)
+            r('checkIpInBlackList');
+
+        $fileContent = $this->readFile($this->blackListDir);
+
+        if(DEBUG)
+            r(count($fileContent));
+
+        return in_array($this->ip, $fileContent);
     }
 
 
@@ -72,6 +122,8 @@ class IpFilter
         $fileStream = fopen($file, "r");
 
         $fileContent = $this->fromFileToArray($separator, $fileStream, $file);
+
+        
 
         fclose($fileStream);
 

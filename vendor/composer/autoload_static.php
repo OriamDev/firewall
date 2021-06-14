@@ -8,6 +8,7 @@ class ComposerStaticInit0ebe7fd74ab4341cc0c6bae226934335
 {
     public static $files = array (
         'e07c71f2ea2b62b033964b1e1efa7980' => __DIR__ . '/..' . '/abeautifulsite/simple-php-captcha/simple-php-captcha.php',
+        '7cca0da9604df282f16d129f538c9833' => __DIR__ . '/..' . '/digitalnature/php-ref/ref.php',
         'd1cf62925ff66691718375345c14f905' => __DIR__ . '/../..' . '/app/helpers/helper.php',
     );
 

@@ -23,14 +23,42 @@ class Firewall
 
         $this->checkRequest();
 
+
+        $this->formatBytes(memory_get_peak_usage());
+
     }
 
+    private function formatBytes($bytes, $precision = 2)
+    {
+
+        $units = array("b", "kb", "mb", "gb", "tb");
+
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+
+        $bytes /= (1 << (10 * $pow));
+        $RAM = round($bytes, $precision) . " " . $units[$pow];
+       if (DEBUG)
+           r($RAM);
+    }
 
 
     private function checkRequest()
     {
+        if (DEBUG)
+            r('checkRequest');
+
+
         if(!isset($_SESSION[$this->ip]))
-            $_SESSION[$this->ip] = [1, time()];
+        {
+            $newIpRequestWithTime = [1, time()];
+            $_SESSION[$this->ip] = $newIpRequestWithTime;
+
+            if(DEBUG)
+                r($newIpRequestWithTime);
+        }
+
 
         elseif (isset($_SESSION['captcha']))
             $this->captchaGenerate();
@@ -47,7 +75,7 @@ class Firewall
         if($this->checkCaptchaAttempts())
         {
             updateBlackList();
-            die('max_captcha_attempts');
+            die();
         }
 
         $this->setCaptchaAttempts();
@@ -74,18 +102,19 @@ class Firewall
 
     private function checkMaxRequestBySecond()
     {
-        $interval = 1; // segundos
-        $maxRequests = 2; // requests
-        $fastRequest = ($_SESSION[$this->ip][1] > time() - $interval);
 
-        if($fastRequest && $_SESSION[$this->ip][0] < $maxRequests)
-            $_SESSION[$this->ip][0]++;
+            $fastRequest = ($_SESSION[$this->ip][1] > time() - RULES['interval']);
 
-        elseif ($fastRequest)
-            $this->captchaGenerate();
+            if($fastRequest && $_SESSION[$this->ip][0] < RULES['maxRequests'])
+                $_SESSION[$this->ip][0]++;
 
-        else
-            $_SESSION[$this->ip] = [1, time()];
+            elseif ($fastRequest)
+                $this->captchaGenerate();
+
+            else
+                $_SESSION[$this->ip] = [1, time()];
+
+
 
     }
 
